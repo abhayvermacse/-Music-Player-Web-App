@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>JioSaavn Music Player By @cyber_raj1</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-music"></i>
+            <span>JioSaavn @cyber_raj1</span>
+        </div>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search Songs, Albums, Artists...">
+            <button id="searchBtn">
+                <i class="fa-solid fa-search"></i>
+            </button>
+        </div>
+        <!-- Favorites Navigation Button -->
+        <button id="openFavModalBtn" class="fav-nav-btn">
+            <i class="fa-solid fa-heart"></i>
+            <span>Favorites</span>
+        </button>
+    </header>
+
+    <!-- Banner -->
+    
+
+    <!-- Multi-Language Full-Width Category Container -->
+    <div class="category-wrapper">
+       <div class="category-tabs" id="categoryTabs">
+        <button class="tab-btn active" onclick="loadCategory('Hindi Hits', this)">🎵 Hindi</button>
+    <button class="tab-btn " onclick="loadCategory('Bhojpuri Hits', this)">🪕 Bhojpuri</button>
+    
+    <button class="tab-btn" onclick="loadCategory('Bollywood Superhits', this)">🎬 Bollywood</button>
+    <button class="tab-btn" onclick="loadCategory('Punjabi Latest', this)">🪘 Punjabi</button>
+    <button class="tab-btn" onclick="loadCategory('Haryanvi Hits', this)">🥁 Haryanvi</button>
+    <button class="tab-btn" onclick="loadCategory('Hollywood English Hits', this)">🎸 Hollywood</button>
+</div>
+    </div>
+
+    <!-- Main Song Grid -->
+    <main>
+        <div id="songs" class="song-list">
+            <!-- Dynamic Song Cards -->
+        </div>
+    </main>
+
+    <!-- Bottom Mini Player -->
+    <div class="player hidden" id="miniPlayer">
+        <div class="left" id="miniPlayerLeft">
+            <img id="cover" src="" alt="cover">
+            <div class="song-details">
+                <h3 id="title">Select Song</h3>
+                <p id="artist">Artist</p>
+            </div>
+        </div>
+
+        <div class="center">
+            <div class="controls">
+                <button id="prev"><i class="fa-solid fa-backward"></i></button>
+                <button id="play"><i class="fa-solid fa-play"></i></button>
+                <button id="next"><i class="fa-solid fa-forward"></i></button>
+            </div>
+            <div class="progress-box">
+                <span id="current">0:00</span>
+                <input type="range" id="progress" value="0" min="0" max="100">
+                <span id="duration">0:00</span>
+            </div>
+        </div>
+
+        <div class="right">
+            <button id="favBtn"><i class="fa-regular fa-heart"></i></button>
+            <button id="miniDownloadBtn" class="download-trigger" title="Download Song">
+                <i class="fa-solid fa-download"></i>
+            </button>
+            <i class="fa-solid fa-volume-high"></i>
+            <input type="range" id="volume" value="100" min="0" max="100">
+            <button id="openFullPlayer"><i class="fa-solid fa-expand"></i></button>
+        </div>
+    </div>
+
+    <!-- Professional Quality Selection Modal -->
+    <div id="qualityModal" class="quality-modal">
+        <div class="quality-box">
+            <div class="quality-header">
+                <div>
+                    <h3>Download Quality</h3>
+                    <p>Choose your preferred audio bitrate</p>
+                </div>
+                <button class="close-modal-btn" onclick="closeQuality()">&times;</button>
+            </div>
+
+            <div class="quality-options">
+                <button class="q-btn" onclick="downloadSong('320kbps')">
+                    <div class="q-info">
+                        <span class="q-title">320 kbps</span>
+                        <span class="q-desc">Very High Quality • Ultra Clear</span>
+                    </div>
+                    <span class="q-badge gold">HD+</span>
+                </button>
+
+                <button class="q-btn" onclick="downloadSong('160kbps')">
+                    <div class="q-info">
+                        <span class="q-title">160 kbps</span>
+                        <span class="q-desc">Standard High Quality</span>
+                    </div>
+                    <span class="q-badge green">HQ</span>
+                </button>
+
+                <button class="q-btn" onclick="downloadSong('96kbps')">
+                    <div class="q-info">
+                        <span class="q-title">96 kbps</span>
+                        <span class="q-desc">Medium Quality • Fast Saver</span>
+                    </div>
+                    <span class="q-badge blue">SD</span>
+                </button>
+
+                <button class="q-btn" onclick="downloadSong('48kbps')">
+                    <div class="q-info">
+                        <span class="q-title">48 kbps</span>
+                        <span class="q-desc">Data Saver Mode</span>
+                    </div>
+                    <span class="q-badge gray">Data Saver</span>
+                </button>
+
+                <button class="q-btn" onclick="downloadSong('12kbps')">
+                    <div class="q-info">
+                        <span class="q-title">12 kbps</span>
+                        <span class="q-desc">Low Bandwidth</span>
+                    </div>
+                    <span class="q-badge gray">Low</span>
+                </button>
+            </div>
+
+            <button class="cancel-btn" onclick="closeQuality()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Favorites Modal -->
+    <div id="favoritesModal" class="favorites-modal">
+        <div class="favorites-box">
+            <div class="fav-header">
+                <h3><i class="fa-solid fa-heart"></i> Favorite Songs</h3>
+                <button id="closeFavModalBtn">&times;</button>
+            </div>
+            <div id="favoritesList" class="favorites-list">
+                <p class="empty-msg">No favorite songs added yet!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Screen Dynamic Player Modal -->
+    <div id="fullPlayer" class="full-player">
+        <div id="bgBlur" class="bg-blur"></div>
+        
+        <button id="backBtn" class="close-full"><i class="fa-solid fa-chevron-down"></i></button>
+
+        <div class="full-layout">
+            <div class="full-main">
+                <div class="cover-wrapper">
+                    <img id="fullCover" src="" alt="Album Art">
+                </div>
+                <h2 id="fullTitle">Select Song</h2>
+                <p id="fullArtist">Artist</p>
+
+                <div class="full-progress-container">
+                    <span id="fullCurrent">0:00</span>
+                    <input type="range" id="fullProgress" value="0" min="0" max="100">
+                    <span id="fullDuration">0:00</span>
+                </div>
+
+                <div class="controls full-controls">
+                    <button id="fullPrev"><i class="fa-solid fa-backward"></i></button>
+                    <button id="fullPlay"><i class="fa-solid fa-play"></i></button>
+                    <button id="fullNext"><i class="fa-solid fa-forward"></i></button>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="lyricsBtn"><i class="fa-solid fa-file-lines"></i> Lyrics</button>
+                    <button id="fullDownloadBtn" class="download-trigger"><i class="fa-solid fa-download"></i> Download</button>
+                </div>
+            </div>
+
+            <div class="recommended-panel">
+                <h3>Recommended Songs</h3>
+                <div id="recommendedList" class="recommended-list">
+                    <p class="empty-msg">Play a song to load suggestions</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lyrics Drawer -->
+    <div id="lyricsPanel" class="lyrics-panel">
+        <button id="closeLyrics">&times;</button>
+        <h2>Lyrics</h2>
+        <div class="lyrics-content">
+            <p id="lyricsText">Click "Lyrics" while playing a song.</p>
+        </div>
+    </div>
+
+    <!-- Loader -->
+    <div id="loader" class="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Hidden Audio Player -->
+    <audio id="audio"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
